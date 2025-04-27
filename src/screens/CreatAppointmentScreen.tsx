@@ -1,49 +1,21 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { Button } from 'react-native-elements';
 import { HeaderContainer, HeaderTitle } from '../components/Header';
-import AppointmentForm from '../components/AppointmentForm';
 import theme from '../styles/theme';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Appointment } from '../types/appointments';
-import { RootStackParamList } from '../types/navigation';
+
+type RootStackParamList = {
+  Home: undefined;
+  CreateAppointment: undefined;
+  Profile: undefined;
+};
 
 type CreateAppointmentScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'CreateAppointment'>;
 };
 
 const CreateAppointmentScreen: React.FC<CreateAppointmentScreenProps> = ({ navigation }) => {
-  const handleSubmit = async (appointment: {
-    doctorId: string;
-    date: Date;
-    time: string;
-    description: string;
-  }) => {
-    try {
-      // Recuperar consultas existentes
-      const existingAppointments = await AsyncStorage.getItem('appointments');
-      const appointments = existingAppointments ? JSON.parse(existingAppointments) : [];
-
-      // Adicionar nova consulta
-      const newAppointment = {
-        id: Date.now().toString(),
-        ...appointment,
-        status: 'pending',
-      };
-
-      appointments.push(newAppointment);
-
-      // Salvar no AsyncStorage
-      await AsyncStorage.setItem('appointments', JSON.stringify(appointments));
-
-      // Navegar de volta para a tela inicial
-      navigation.navigate('Home');
-    } catch (error) {
-      console.error('Erro ao salvar consulta:', error);
-      alert('Erro ao salvar a consulta. Tente novamente.');
-    }
-  };
-
   return (
     <Container>
       <HeaderContainer>
@@ -51,7 +23,25 @@ const CreateAppointmentScreen: React.FC<CreateAppointmentScreenProps> = ({ navig
       </HeaderContainer>
 
       <Content>
-        <AppointmentForm onSubmit={handleSubmit} />
+        <Button
+          title="Voltar"
+          icon={{
+            name: 'arrow-left',
+            type: 'font-awesome',
+            size: 20,
+            color: 'white'
+          }}
+          buttonStyle={{
+            backgroundColor: theme.colors.primary,
+            borderRadius: 8,
+            padding: 12,
+            marginBottom: 20
+          }}
+          onPress={() => navigation.goBack()}
+        />
+
+        {/* Aqui você pode adicionar os campos do formulário de agendamento */}
+        <FormText>Formulário de Agendamento</FormText>
       </Content>
     </Container>
   );
@@ -59,15 +49,18 @@ const CreateAppointmentScreen: React.FC<CreateAppointmentScreenProps> = ({ navig
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${theme.colors.Background};
+  background-color: ${theme.colors.background};
 `;
 
-const Content = styled.ScrollView`
+const Content = styled.View`
   flex: 1;
+  padding: ${theme.spacing.medium}px;
+`;
+
+const FormText = styled.Text`
+  font-size: ${theme.typography.subtitle.fontSize}px;
+  color: ${theme.colors.text};
+  text-align: center;
 `;
 
 export default CreateAppointmentScreen;
-
-function alert(arg0: string) {
-  throw new Error('Function not implemented.');
-}

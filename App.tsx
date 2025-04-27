@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components';
-import AppRoutes from './src/routes/index.tsx';
-import theme from './src/styles/theme.js';
+import AppRoutes from './src/routes';
+import theme from './src/styles/theme';
 import { StatusBar } from 'react-native';
 
 export default function App() {

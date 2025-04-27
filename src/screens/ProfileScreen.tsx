@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Button } from 'react-native-elements';
-import { HeaderContainer, HeaderTitle } from '../components/Header.tsx';
-import theme from '../styles/theme.js';
+import { HeaderContainer, HeaderTitle } from '../components/Header';
+import theme from '../styles/theme';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
@@ -52,7 +52,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${theme.colors.Background};
+  background-color: ${theme.colors.background};
 `;
 
 const Content = styled.View`
